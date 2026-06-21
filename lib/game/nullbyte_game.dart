@@ -27,6 +27,7 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
   late BackgroundGrid backgroundGrid;
   late PlayerDrone player;
   late JoystickComponent joystick;
+  late JoystickComponent shootingJoystick;
   
   late BulletPool<PlayerBullet> playerBulletPool;
   late BulletPool<EnemyBullet> enemyBulletPool;
@@ -76,11 +77,18 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
       margin: const EdgeInsets.only(left: 40, bottom: 40),
     );
     
-    // Add joystick to viewport
+    shootingJoystick = JoystickComponent(
+      knob: CircleComponent(radius: 20, paint: knobPaint),
+      background: CircleComponent(radius: 50, paint: backgroundPaint),
+      margin: const EdgeInsets.only(right: 40, bottom: 40),
+    );
+    
+    // Add joysticks to viewport
     camera.viewport.add(joystick);
+    camera.viewport.add(shootingJoystick);
 
     // Add player
-    player = PlayerDrone(joystick: joystick);
+    player = PlayerDrone(joystick: joystick, shootingJoystick: shootingJoystick);
     await world.add(player);
 
     // Setup camera

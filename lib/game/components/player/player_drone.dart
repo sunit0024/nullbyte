@@ -8,6 +8,7 @@ import '../pickups/pickup_pool.dart';
 
 class PlayerDrone extends PositionComponent with HasGameRef<NullbyteGame> {
   final JoystickComponent joystick;
+  final JoystickComponent shootingJoystick;
   
   Vector2 _velocity = Vector2.zero();
   double _tiltAngle = 0.0;
@@ -34,7 +35,7 @@ class PlayerDrone extends PositionComponent with HasGameRef<NullbyteGame> {
     }
   }
   
-  PlayerDrone({required this.joystick}) : super(
+  PlayerDrone({required this.joystick, required this.shootingJoystick}) : super(
     size: Vector2.all(Constants.playerSize),
     anchor: Anchor.center,
   );
@@ -192,22 +193,35 @@ class PlayerDrone extends PositionComponent with HasGameRef<NullbyteGame> {
   void _fireBullet() {
     if (isDead) return;
     
+    // Determine base firing direction
+    Vector2 baseDir = Vector2(0, -1);
+    if (shootingJoystick.direction != JoystickDirection.idle) {
+      baseDir = shootingJoystick.relativeDelta.normalized();
+    }
+    
+    // We use the angle of the base direction to rotate all bullets
+    final double baseAngle = atan2(baseDir.y, baseDir.x);
+    // Vector2(0, -1) has an angle of -pi/2
+    // We calculate a relative offset from -pi/2 for our bullets
+    
     List<Vector2> dirs = [];
     switch (currentWeapon) {
       case WeaponType.hexblast:
         dirs = [
-          Vector2(0, -1),
-          Vector2(-0.2, -1).normalized(),
-          Vector2(0.2, -1).normalized(),
+          Vector2(cos(baseAngle), sin(baseAngle)),
+          Vector2(cos(baseAngle - 0.2), sin(baseAngle - 0.2)),
+          Vector2(cos(baseAngle + 0.2), sin(baseAngle + 0.2)),
         ];
         break;
       case WeaponType.dataLance:
-        dirs = [Vector2(0, -1)];
+        dirs = [Vector2(cos(baseAngle), sin(baseAngle))];
         break;
       case WeaponType.nullScatter:
         for (int i = 0; i < 6; i++) {
-          final angle = (-25 + i * 10) * pi / 180.0;
-          dirs.add(Vector2(sin(angle), -cos(angle)));
+          // Standard angle relative to straight up (-pi/2)
+          final spreadOffset = (-25 + i * 10) * pi / 180.0;
+          final spreadAngle = baseAngle + spreadOffset;
+          dirs.add(Vector2(cos(spreadAngle), sin(spreadAngle)));
         }
         break;
     }
