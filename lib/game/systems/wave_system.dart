@@ -64,6 +64,7 @@ class WaveSystem extends Component with HasGameRef<NullbyteGame> {
   @override
   void update(double dt) {
     super.update(dt);
+    if (gameRef.gamePaused) return;
     
     if (_waitingForNext) {
       _timer += dt;

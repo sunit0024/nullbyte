@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flame/components.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../game/nullbyte_game.dart';
 
 enum PickupType { health, shield, weapon, dataShard }
 
@@ -97,7 +98,7 @@ class PickupPool {
   }
 }
 
-class PickupPoolComponent extends Component {
+class PickupPoolComponent extends Component with HasGameRef<NullbyteGame> {
   final PickupPool pool;
   final AppTheme appTheme;
 
@@ -105,6 +106,7 @@ class PickupPoolComponent extends Component {
 
   @override
   void update(double dt) {
+    if (gameRef.gamePaused) return;
     pool.updateAll(dt);
   }
 

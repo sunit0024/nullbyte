@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flame/components.dart';
+import '../../../game/nullbyte_game.dart';
 
 abstract class PooledBullet {
   bool _isActive = false;
@@ -75,13 +76,14 @@ class BulletPool<T extends PooledBullet> {
   }
 }
 
-class BulletPoolComponent<T extends PooledBullet> extends Component {
+class BulletPoolComponent<T extends PooledBullet> extends Component with HasGameRef<NullbyteGame> {
   final BulletPool<T> pool;
 
   BulletPoolComponent({required this.pool});
 
   @override
   void update(double dt) {
+    if (gameRef.gamePaused) return;
     pool.updateAll(dt);
   }
 

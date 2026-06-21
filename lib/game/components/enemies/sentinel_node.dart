@@ -26,7 +26,7 @@ class SentinelNode extends BaseEnemy {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (isPaused) return;
     _pulseTime += dt * 5;
 
     // Movement: Orbit around the fixed point

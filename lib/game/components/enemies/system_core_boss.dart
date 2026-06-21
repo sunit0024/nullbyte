@@ -24,7 +24,7 @@ class SystemCoreBoss extends BaseEnemy {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (isPaused) return;
     _pulseTime += dt * 2;
     _fireTimer += dt;
     _specialTimer += dt;

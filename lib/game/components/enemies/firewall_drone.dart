@@ -25,7 +25,7 @@ class FirewallDrone extends BaseEnemy {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (isPaused) return;
     _pulseTime += dt * 8;
     _stateTimer += dt;
     

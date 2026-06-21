@@ -36,6 +36,7 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
   late ScoringSystem scoringSystem;
   
   bool isPlaying = false;
+  bool gamePaused = false;
   
   double _shakeTimer = 0.0;
   double _shakeIntensity = 0.0;
@@ -112,6 +113,9 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
     camera.viewport.add(shieldButton);
     camera.viewport.add(weaponButton);
     
+    // Add pause button (top-right corner)
+    camera.viewport.add(PauseButton());
+    
     // Start paused
     pauseEngine();
   }
@@ -137,6 +141,11 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
     // Show game over overlay
     overlays.add('MainMenu'); // Temporary, back to main menu
   }
+  
+  void togglePause() {
+    if (!isPlaying) return; // Don't toggle if not in a game
+    gamePaused = !gamePaused;
+  }
 
   @override
   KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
@@ -156,7 +165,7 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
   @override
   void update(double dt) {
     super.update(dt);
-    if (!isPlaying) return;
+    if (!isPlaying || gamePaused) return;
 
     if (_shakeTimer > 0) {
       _shakeTimer -= dt;

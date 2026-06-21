@@ -47,7 +47,7 @@ class ScoringSystem extends Component with HasGameRef<NullbyteGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (gameRef.gamePaused) return;
     if (combo > 1) {
       comboTimer -= dt;
       if (comboTimer <= 0) {

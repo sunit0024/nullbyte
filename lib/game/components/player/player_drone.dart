@@ -61,6 +61,7 @@ class PlayerDrone extends PositionComponent with HasGameRef<NullbyteGame> {
   @override
   void update(double dt) {
     super.update(dt);
+    if (gameRef.gamePaused) return;
     
     _pulseTime += dt * 4; 
 

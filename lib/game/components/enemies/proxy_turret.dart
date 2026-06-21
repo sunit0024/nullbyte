@@ -22,7 +22,7 @@ class ProxyTurret extends BaseEnemy {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (isPaused) return;
     _pulseTime += dt * 4;
 
     _fireTimer += dt;

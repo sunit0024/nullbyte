@@ -8,6 +8,7 @@ class CollisionSystem extends Component with HasGameRef<NullbyteGame> {
   @override
   void update(double dt) {
     super.update(dt);
+    if (gameRef.gamePaused) return;
     
     // Player bullets vs Enemies
     final activePlayerBullets = gameRef.playerBulletPool.activeBullets;

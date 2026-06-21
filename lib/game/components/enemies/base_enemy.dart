@@ -16,6 +16,8 @@ abstract class BaseEnemy extends PositionComponent with HasGameRef<NullbyteGame>
     required Vector2 size,
   }) : hp = maxHp, super(size: size, anchor: Anchor.center);
 
+  bool get isPaused => gameRef.gamePaused;
+
   void takeDamage(double amount) {
     hp -= amount;
     if (hp <= 0) {

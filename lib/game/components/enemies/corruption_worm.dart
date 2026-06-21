@@ -36,7 +36,7 @@ class CorruptionWormHead extends BaseEnemy {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (isPaused) return;
     _time += dt;
 
     // Movement: Sinusoidal path downwards
@@ -126,7 +126,7 @@ class CorruptionWormSegment extends BaseEnemy {
   @override
   void update(double dt) {
     super.update(dt);
-    
+    if (isPaused) return;
     // Follow history
     int historyIndex = index * 15;
     if (head.pathHistory.length > historyIndex) {
