@@ -16,6 +16,7 @@ import 'systems/wave_system.dart';
 import 'systems/scoring_system.dart';
 import 'components/pickups/pickup_pool.dart';
 import 'components/pickups/game_pickup.dart';
+import 'components/enemies/base_enemy.dart';
 import 'components/ui/mobile_controls.dart';
 import '../core/save_manager.dart';
 import 'dart:math';
@@ -122,16 +123,44 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
   
   void startGame() {
     isPlaying = true;
+    gamePaused = false;
     scoringSystem.score = 0;
     scoringSystem.combo = 1;
-    // reset player, wave system, etc.
-    // For now we just resume engine
+    
+    // Clear entities
+    for (var b in playerBulletPool.activeBullets.toList()) {
+      playerBulletPool.release(b);
+    }
+    for (var b in enemyBulletPool.activeBullets.toList()) {
+      enemyBulletPool.release(b);
+    }
+    for (var p in pickupPool.activePickups.toList()) {
+      pickupPool.release(p);
+    }
+    for (var e in world.children.whereType<BaseEnemy>()) {
+      e.removeFromParent();
+    }
+    
+    // Reset player
+    player.hp = 100.0;
+    player.shield = 100.0;
+    player.shieldActive = false;
+    player.position = Vector2.zero();
+    player.currentWeapon = WeaponType.hexblast;
+    player.weaponTier = 1;
+    if (player.parent == null) {
+      world.add(player);
+    }
+    
+    // Reset wave system
+    final waveSystem = world.children.whereType<WaveSystem>().first;
+    waveSystem.reset();
+
     resumeEngine();
   }
   
   void gameOver() {
     isPlaying = false;
-    pauseEngine();
     
     // Save progression
     SaveManager.saveHighScore(scoringSystem.score);
@@ -139,7 +168,7 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
     SaveManager.saveMaxSector(waveSystem.sector);
     
     // Show game over overlay
-    overlays.add('MainMenu'); // Temporary, back to main menu
+    overlays.add('GameOver');
   }
   
   void togglePause() {

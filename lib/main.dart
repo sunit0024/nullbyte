@@ -7,6 +7,8 @@ import 'core/save_manager.dart';
 import 'game/nullbyte_game.dart';
 import 'ui/main_menu_overlay.dart';
 
+import 'ui/game_over_overlay.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SaveManager.init();
@@ -38,6 +40,7 @@ class NullbyteApp extends StatelessWidget {
           game: NullbyteGame(appTheme: appTheme),
           overlayBuilderMap: {
             'MainMenu': (context, game) => MainMenuOverlay(game),
+            'GameOver': (context, game) => GameOverOverlay(game: game),
           },
           initialActiveOverlays: const ['MainMenu'],
         ),

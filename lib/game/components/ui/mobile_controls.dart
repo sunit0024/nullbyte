@@ -69,7 +69,12 @@ class ShieldButton extends _JoystickOrbitButton {
         fontWeight: FontWeight.bold,
       ),
     );
-    textPaint.render(canvas, "SHIELD", Vector2(10, 22));
+    textPaint.render(
+      canvas, 
+      "SHIELD", 
+      Vector2(size.x / 2, size.y / 2), 
+      anchor: Anchor.center,
+    );
   }
 
   @override
@@ -109,7 +114,12 @@ class WeaponButton extends _JoystickOrbitButton {
         fontWeight: FontWeight.bold,
       ),
     );
-    textPaint.render(canvas, "WEAPON", Vector2(8, 22));
+    textPaint.render(
+      canvas, 
+      "WEAPON", 
+      Vector2(size.x / 2, size.y / 2), 
+      anchor: Anchor.center,
+    );
   }
 
   @override

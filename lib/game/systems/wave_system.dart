@@ -41,6 +41,18 @@ class WaveSystem extends Component with HasGameRef<NullbyteGame> {
 
   late TextComponent sectorBanner;
 
+  void reset() {
+    currentWaveIndex = 1;
+    sector = 1;
+    _timer = 0.0;
+    _waveTimer = 0.0;
+    _waveActive = false;
+    _waitingForNext = true;
+    _isBossWave = false;
+    _currentSpawns.clear();
+    sectorBanner.text = '';
+  }
+
   @override
   Future<void> onLoad() async {
     super.onLoad();

@@ -266,5 +266,6 @@ class PlayerDrone extends PositionComponent with HasGameRef<NullbyteGame> {
 
   void die() {
     removeFromParent();
+    gameRef.gameOver();
   }
 }
