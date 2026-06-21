@@ -117,8 +117,14 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
     // Add pause button (top-right corner)
     camera.viewport.add(PauseButton());
     
+    // Add settings button (below pause button)
+    camera.viewport.add(SettingsButton());
+    
     // Start paused
     pauseEngine();
+    
+    // Show main menu initially
+    overlays.add('MainMenu');
   }
   
   void startGame() {

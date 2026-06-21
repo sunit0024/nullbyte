@@ -15,51 +15,88 @@ class MainMenuOverlay extends StatelessWidget {
     
     return Material(
       color: appTheme.colors.background.withValues(alpha: 0.9),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'NULLBYTE',
-              style: TextStyle(
-                color: appTheme.colors.neonCyan,
-                fontSize: 80,
-                fontFamily: 'Rajdhani',
-                fontWeight: FontWeight.bold,
-                letterSpacing: 10,
-                shadows: [
-                  Shadow(color: appTheme.colors.neonCyan, blurRadius: 20),
-                ],
+      child: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'NULLBYTE',
+                  style: TextStyle(
+                    color: appTheme.colors.neonCyan,
+                    fontSize: 80,
+                    fontFamily: 'Rajdhani',
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 10,
+                    shadows: [
+                      Shadow(color: appTheme.colors.neonCyan, blurRadius: 20),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'HIGH SCORE: ${SaveManager.getHighScore()}',
+                  style: TextStyle(
+                    color: appTheme.colors.neonAmber,
+                    fontSize: 24,
+                    fontFamily: 'Rajdhani',
+                  ),
+                ),
+                Text(
+                  'MAX SECTOR: ${SaveManager.getMaxSector()}',
+                  style: TextStyle(
+                    color: appTheme.colors.neonAmber,
+                    fontSize: 20,
+                    fontFamily: 'Rajdhani',
+                  ),
+                ),
+                const SizedBox(height: 50),
+                _buildButton('START HACK', appTheme.colors.neonGreen, () {
+                  game.overlays.remove('MainMenu');
+                  game.startGame();
+                }),
+                const SizedBox(height: 20),
+                _buildButton('SETTINGS', appTheme.colors.neonAmber, () {
+                  game.overlays.add('Settings');
+                }),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 40,
+            right: 40,
+            child: GestureDetector(
+              onTap: () {
+                appTheme.toggleTheme();
+              },
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: appTheme.colors.panelBg.withValues(alpha: 0.85),
+                  border: Border.all(
+                    color: appTheme.colors.neonMagenta.withValues(alpha: 0.7),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: appTheme.colors.neonMagenta.withValues(alpha: 0.2),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  appTheme.isDark ? "🌙" : "☀️",
+                  style: const TextStyle(fontSize: 22),
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              'HIGH SCORE: ${SaveManager.getHighScore()}',
-              style: TextStyle(
-                color: appTheme.colors.neonAmber,
-                fontSize: 24,
-                fontFamily: 'Rajdhani',
-              ),
-            ),
-            Text(
-              'MAX SECTOR: ${SaveManager.getMaxSector()}',
-              style: TextStyle(
-                color: appTheme.colors.neonAmber,
-                fontSize: 20,
-                fontFamily: 'Rajdhani',
-              ),
-            ),
-            const SizedBox(height: 50),
-            _buildButton('START HACK', appTheme.colors.neonGreen, () {
-              game.overlays.remove('MainMenu');
-              game.startGame();
-            }),
-            const SizedBox(height: 20),
-            _buildButton('SETTINGS', appTheme.colors.neonAmber, () {
-              appTheme.toggleTheme();
-            }),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

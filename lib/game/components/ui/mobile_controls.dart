@@ -210,3 +210,68 @@ class PauseButton extends PositionComponent with TapCallbacks, HasGameRef<Nullby
     gameRef.togglePause();
   }
 }
+
+class SettingsButton extends PositionComponent with TapCallbacks, HasGameRef<NullbyteGame> {
+  double _pulseTime = 0.0;
+
+  SettingsButton() : super(
+    size: Vector2(44, 44),
+    anchor: Anchor.center,
+  );
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    _pulseTime += dt * 3;
+    // Position below the PauseButton
+    position = Vector2(gameRef.size.x - 40, 95);
+  }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+
+    final center = (size / 2).toOffset();
+    final radius = size.x / 2;
+
+    // Outer glow
+    final glowAlpha = 0.15 + 0.05 * sin(_pulseTime);
+    final glowPaint = Paint()
+      ..color = gameRef.appTheme.colors.neonMagenta.withValues(alpha: glowAlpha)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
+    canvas.drawCircle(center, radius + 4, glowPaint);
+
+    // Background
+    final bgPaint = Paint()
+      ..color = gameRef.appTheme.colors.panelBg.withValues(alpha: 0.85);
+    canvas.drawCircle(center, radius, bgPaint);
+
+    // Border
+    final borderPaint = Paint()
+      ..color = gameRef.appTheme.colors.neonMagenta.withValues(alpha: 0.7)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    canvas.drawCircle(center, radius, borderPaint);
+
+    // Icon (Settings Gear)
+    final textPaint = TextPaint(
+      style: const TextStyle(
+        fontSize: 22,
+      ),
+    );
+    textPaint.render(
+      canvas, 
+      "⚙️", 
+      Vector2(size.x / 2, size.y / 2), 
+      anchor: Anchor.center,
+    );
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    if (!gameRef.isPlaying) return;
+    gameRef.gamePaused = true;
+    gameRef.overlays.add('Settings');
+  }
+}
+
