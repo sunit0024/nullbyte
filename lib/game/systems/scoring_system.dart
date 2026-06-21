@@ -118,3 +118,58 @@ class BossHpBar extends Component with HasGameRef<NullbyteGame> {
     }
   }
 }
+
+class PlayerHpBar extends Component with HasGameRef<NullbyteGame> {
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    
+    if (gameRef.player.isDead) return;
+    
+    final hpPercentage = (gameRef.player.hp / 100.0).clamp(0.0, 1.0);
+    final shieldPercentage = (gameRef.player.shield / 100.0).clamp(0.0, 1.0);
+    
+    final barWidth = 200.0;
+    final barHeight = 12.0;
+    
+    // Position at top left under the SCORE and COMBO text
+    final x = 50.0;
+    final y = 90.0;
+    
+    // HP Bar
+    final bgPaint = Paint()..color = Colors.black54;
+    canvas.drawRect(Rect.fromLTWH(x, y, barWidth, barHeight), bgPaint);
+    
+    final hpColor = gameRef.player.hp < 30 ? gameRef.appTheme.colors.neonRed : gameRef.appTheme.colors.neonGreen;
+    final hpPaint = Paint()..color = hpColor;
+    canvas.drawRect(Rect.fromLTWH(x, y, barWidth * hpPercentage, barHeight), hpPaint);
+    
+    // Shield Bar
+    final shieldY = y + 16.0;
+    canvas.drawRect(Rect.fromLTWH(x, shieldY, barWidth, barHeight), bgPaint);
+    
+    final shieldColor = gameRef.appTheme.colors.neonCyan;
+    final shieldPaint = Paint()..color = shieldColor;
+    canvas.drawRect(Rect.fromLTWH(x, shieldY, barWidth * shieldPercentage, barHeight), shieldPaint);
+    
+    // Borders
+    final borderPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+    canvas.drawRect(Rect.fromLTWH(x, y, barWidth, barHeight), borderPaint);
+    canvas.drawRect(Rect.fromLTWH(x, shieldY, barWidth, barHeight), borderPaint);
+    
+    // Labels
+    final textPaint = TextPaint(
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 10,
+        fontFamily: 'Rajdhani',
+        fontWeight: FontWeight.bold,
+      ),
+    );
+    textPaint.render(canvas, "HP", Vector2(x - 20, y - 1));
+    textPaint.render(canvas, "SHIELD", Vector2(x - 38, shieldY - 1));
+  }
+}

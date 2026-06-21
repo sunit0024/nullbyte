@@ -16,6 +16,7 @@ import 'systems/wave_system.dart';
 import 'systems/scoring_system.dart';
 import 'components/pickups/pickup_pool.dart';
 import 'components/pickups/game_pickup.dart';
+import 'components/ui/mobile_controls.dart';
 import '../core/save_manager.dart';
 import 'dart:math';
 
@@ -100,8 +101,16 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
     scoringSystem = ScoringSystem();
     await world.add(scoringSystem);
     
-    // Add Boss HP Bar to viewport
+    // Add UI to viewport
     camera.viewport.add(BossHpBar());
+    camera.viewport.add(PlayerHpBar());
+    
+    // Add mobile action buttons (orbit around the shooting joystick)
+    final shieldButton = ShieldButton(joystick: shootingJoystick);
+    final weaponButton = WeaponButton(joystick: shootingJoystick);
+    
+    camera.viewport.add(shieldButton);
+    camera.viewport.add(weaponButton);
     
     // Start paused
     pauseEngine();
