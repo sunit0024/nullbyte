@@ -200,6 +200,14 @@ class NullbyteGame extends FlameGame with HasCollisionDetection, KeyboardEvents 
   @override
   void update(double dt) {
     super.update(dt);
+    
+    // Update joystick colors dynamically so they respond to theme changes
+    (joystick.knob as CircleComponent?)?.paint.color = appTheme.colors.neonCyan.withValues(alpha: 0.8);
+    (joystick.background as CircleComponent?)?.paint.color = appTheme.colors.neonCyan.withValues(alpha: 0.15);
+    
+    (shootingJoystick.knob as CircleComponent?)?.paint.color = appTheme.colors.neonCyan.withValues(alpha: 0.8);
+    (shootingJoystick.background as CircleComponent?)?.paint.color = appTheme.colors.neonCyan.withValues(alpha: 0.15);
+
     if (!isPlaying || gamePaused) return;
 
     if (_shakeTimer > 0) {

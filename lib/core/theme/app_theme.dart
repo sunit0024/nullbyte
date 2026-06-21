@@ -47,7 +47,7 @@ class NullbyteColors {
   factory NullbyteColors.dark() {
     return NullbyteColors(
       background: const Color(0xFF050510),
-      grid: const Color(0xFF0D0D2B),
+      grid: const Color(0xFF1B1B3A),
       neonCyan: const Color(0xFF00F5FF),
       neonMagenta: const Color(0xFFFF00FF),
       neonAmber: const Color(0xFFFFB300),
